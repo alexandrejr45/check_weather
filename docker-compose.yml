@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+    check_weather:
+        build: .
+        image: check_weather_img
+        container_name: check_weather_ctn
+        command: python manage.py runserver 0.0.0.0:4000
+        ports:
+            - "4000:4000"
+        volumes:
+            - ./app/:/opt/django/app/
+            - ./logs/:/opt/logs/
+        networks:
+            - postgres_network
+        env_file:
+            ./.env.dev
+networks:
+    postgres_network:
+        external:
+            name: postgres_network
