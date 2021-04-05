@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+      {% load static %}
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>Login</title>
+  </head>
+  <body>
+    <main class="content">
+      <form class="form-content" id="form-content" action="{% url 'core:login' %}" method="post">
+          {% csrf_token %}
+        <div class="form-errors" >
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="form-header">Log In to your account</div>
+        <div class="form-group">
+          <label for="id_username">Login</label>
+<!--          <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150"-->
+<!--                 required="" id="id_username">-->
+          {{ form.username }}
+        </div>
+        <div class="form-group">
+          <label for="id_password">Password</label>
+<!--          <input type="password" name="password" autocomplete="current-password" required="" id="id_password">-->
+         {{ form.password }}
+        </div>
+        <div class="form-group">
+          <input class="input-submit" type="submit" name="input-submit" value="Log In">
+        </div>
+
+        <br>
+
+        <div class="form-links">
+          <div class="password-reset">
+            <span>Forgot your password? Click</span><a href="#"> Here</a>
+          </div>
+          <div class="sign-up">
+            <span>Doesn't have an account? Create a new</span><a target="_blank" href="{% url 'core:sign_up' %}"> Here</a>
+          </div>
+        </div>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

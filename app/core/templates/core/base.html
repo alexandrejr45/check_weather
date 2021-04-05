@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title> {% block title %} Início {% endblock %}</title>
+</head>
+<body>
+    <header>
+        <ul>
+            <li><a href="{% url 'core:index' %}">Home</a></li>
+        </ul>
+    </header>
+
+    <br>
+    <br>
+    <br>
+
+    {% block content %} {% endblock %}
+
+    <br>
+    <br>
+    <br>
+
+    <section>
+        <a href="{% url 'core:logout' %}"><button>Logout</button></a>
+    </section>
+</body>
+</html>

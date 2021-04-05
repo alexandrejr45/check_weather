@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
-    <header>
-        <h1>Home</h1>
-    </header>
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+    <section>
+        {% if user.is_authenticated %}
+        <div><h3>Usuário logado</h3></div>
+        {% endif %}
+    </section>
+
+    <section>
+
+    </section>
+{% endblock %}
