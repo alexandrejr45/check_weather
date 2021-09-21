@@ -71,6 +71,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'check_weather.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'core.User'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
