@@ -1,11 +1,12 @@
-from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model, views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView
+from django.views import View
+from .forms import CreateUserForm
 from .open_weather_api.services import get_current_weather
 
 
@@ -22,31 +23,42 @@ class Logout(auth_views.LogoutView):
     next_page = 'core:index'
 
 
-class SignUp(TemplateView):
+class SignUp(View):
+    form_class = CreateUserForm
     template_name = 'core/sign_up.html'
 
-# def index(request):
-#     return render(request, 'core/index.html')
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    @method_decorator(csrf_protect)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            try:
+                user = get_user_model()
+                new_user = user.objects.create_user(
+                    username=form.cleaned_data['login'],
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data['password_check']
+                )
+                new_user.first_name = form.cleaned_data['first_name']
+                new_user.last_name = form.cleaned_data['last_name']
+                new_user.save()
+                return redirect('core:login')
+            except Exception as err:
+                return err
+                #return HttpResponseBadRequest('Requisição inválida')
+
+        return render(request, self.template_name, {'form': form})
 
 
-@csrf_protect
-def add_user(request):
-    return HttpResponse(request, 'add user test')
+class CheckWeather(LoginRequiredMixin, View):
 
-
-@login_required(login_url='core:login')
-def current_weather(request, city: str):
-    if request.method == 'GET':
-        weather = dict(get_current_weather(city))
-        print(weather)
-        print(type(weather))
-        return JsonResponse(weather)
-
-
-def login_page(request):
-    if request.user.is_authenticated:
-        return redirect('core:index')
-    else:
-        return render(request, 'core/login.html')
-
-
+    def get(self, request, city: str):
+        try:
+            weather = dict(get_current_weather(city))
+            print(weather)
+            return JsonResponse(weather)
+        except Exception as err:
+            return err
