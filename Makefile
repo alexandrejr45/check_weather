@@ -18,7 +18,10 @@ show_urls:
 	sudo docker container exec check_weather_ctn python manage.py show_urls
 
 tests:
-	sudo docker container exec check_weather_ctn pytest core/tests.py
+	sudo docker container exec check_weather_ctn pytest
+
+flake8:
+	sudo docker container exec check_weather_ctn flake8
 
 log:
 	sudo docker container logs -f check_weather_ctn
