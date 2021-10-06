@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
 from django.views import View
 from .forms import CreateUserForm
-from .open_weather_api.services import get_current_weather
+from .weather.services import get_current_weather
 
 
 class Index(LoginRequiredMixin, TemplateView):
