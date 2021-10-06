@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.Logout.as_view(), name='logout'),
     path('sign-up/', views.SignUp.as_view(), name='sign_up'),
-    path('current_weather/<str:city>/', views.CheckWeather.as_view(), name='current_weather')
+    path('weather/<str:city>/', views.CheckWeather.as_view(), name='current_weather')
 ]
