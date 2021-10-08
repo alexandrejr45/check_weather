@@ -1,13 +1,11 @@
 from django.contrib.auth import get_user_model, views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
 from django.views import View
 from .forms import CreateUserForm
-from .weather.services import get_current_weather
 
 
 class Index(LoginRequiredMixin, TemplateView):
@@ -51,14 +49,3 @@ class SignUp(View):
                 #return HttpResponseBadRequest('Requisição inválida')
 
         return render(request, self.template_name, {'form': form})
-
-
-class CheckWeather(LoginRequiredMixin, View):
-
-    def get(self, request, city: str):
-        try:
-            weather = dict(get_current_weather(city))
-            print(weather)
-            return JsonResponse(weather)
-        except Exception as err:
-            return err
